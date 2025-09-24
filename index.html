@@ -60,13 +60,12 @@
 
           <div class="flex items-center gap-3">
             <button id="qrBtn" class="px-3 py-2 rounded-lg bg-white border">📷 Scanner QR</button>
+            <input type="file" id="cameraInput" accept="image/*" capture="environment" class="hidden">
           </div>
+          
         </div>
 
-        <section id="qrSection" class="hidden">
-          <div id="qr-reader" class="w-full" style="min-height:240px"></div>
-          <div id="qr-result" class="mt-2 text-sm text-gray-700"></div>
-        </section>
+
 
         <section class="flex items-center justify-center">
           <img src="One piece/flag.jpeg" alt="Drapeau Luffy" class="w-40" />
@@ -284,16 +283,22 @@
     namiModal.style.display = 'none';
   });
 
-  // --- QR Code (désactivé mais bouton actif) ---
-  qrBtn.addEventListener('click', ()=>{
-    if(qrSection.classList.contains('hidden')) {
-      qrSection.classList.remove('hidden'); 
-      qrResult.textContent = "⚠️ Fonction scanner désactivée pour l'instant.";
-    } else {
-      qrSection.classList.add('hidden');
-      qrResult.textContent = "";
-    }
-  });
+// --- QR Code (ouvre la caméra native) ---
+const cameraInput = document.getElementById('cameraInput');
+
+qrBtn.addEventListener('click', ()=>{
+  // Simule un clic sur l'input caché
+  cameraInput.click();
+});
+
+// Quand une photo est prise / choisie
+cameraInput.addEventListener('change', (event)=>{
+  if(event.target.files.length > 0){
+    const file = event.target.files[0];
+    scanOutput.innerHTML += `<div>📷 Photo sélectionnée : ${file.name}</div>`;
+  }
+});
+
 
   // --- End Game Moussaillon ---
   function endGame(){ endModal.classList.remove('hidden'); endModal.style.display='flex'; }
@@ -351,4 +356,5 @@
 
 </body>
 </html>
+
 
