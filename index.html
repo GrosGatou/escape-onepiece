@@ -124,7 +124,7 @@
 
 <script>
   const MAX_HINTS = 5;
-  const HINT_PENALTY = 300; 
+  const HINT_PENALTY = 300;
   const TOTAL_TIME = 3600;
   let timer = TOTAL_TIME;
   let timerInterval = null;
@@ -204,7 +204,7 @@
       if(hintsUsed >= MAX_HINTS){ alert("Plus d'indices disponibles."); return; }
       if(btn.disabled) return;
 
-      hintSteps.classList.add('hidden'); 
+      hintSteps.classList.add('hidden');
 
       const namiModal = document.getElementById('namiModal');
       const namiMessage = document.getElementById('namiMessage');
@@ -263,8 +263,8 @@
   });
 
   finishBtn.addEventListener('click', ()=>{
-    clearInterval(timerInterval); 
-    timer = 0; 
+    clearInterval(timerInterval);
+    timer = 0;
     updateTimerDisplay();
     finishModal.classList.remove('hidden');
     finishModal.style.display = 'flex';
@@ -282,8 +282,8 @@
   });
 
   finishNo.addEventListener('click', ()=>{
-    finishModal.classList.add('hidden');    
-    finishModal.style.display = 'none';    
+    finishModal.classList.add('hidden');
+    finishModal.style.display = 'none';
   });
 
   closeBtn.addEventListener('click', ()=>{
@@ -291,13 +291,31 @@
     aside.style.display = 'none';
     finishModal.style.display = 'none';
     endModal.style.display = 'none';
-
     crewScreen.classList.remove('hidden');
     crewScreen.style.display = 'flex';
   });
 
+  // -----------------------
+  // NOUVEAU : Affichage texte selon paramètre URL
+  function getUrlParameter(name) {
+    const params = new URLSearchParams(window.location.search);
+    return params.get(name);
+  }
+
+  const urlIndice = getUrlParameter('indice');
+  if (urlIndice !== null) {
+    const mainSection = document.querySelector('main section');
+    const extraText = document.createElement('div');
+    extraText.textContent = `Texte spécial pour l'indice ${urlIndice} !`;
+    extraText.classList.add('mt-2', 'text-center', 'font-semibold', 'text-lg', 'text-rose-600');
+    mainSection.appendChild(extraText);
+  }
+
+  // -----------------------
   updateTimerDisplay();
 </script>
+
 </body>
 </html>
+
 
