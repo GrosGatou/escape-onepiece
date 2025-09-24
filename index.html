@@ -166,6 +166,74 @@
   "Indice étape 4 : Avec mon sens de l'orientation je suis obligée de suivre l'ordre donné — Zoro",
   "Indice étape 5 : Hiiiii vite ! Usopp a le mal des transports, allons vite chercher des soins en ville — Chopper"
 ];
+// --- Sauvegarde dans localStorage ---
+function saveState() {
+  const state = {
+    timer,
+    started,
+    hintsUsed,
+    shownHints: Array.from(document.querySelectorAll('#hintsList li')).map(li => li.textContent),
+    currentHint: document.getElementById('currentHint').textContent,
+    gameEnded: crewScreen.style.display === 'flex'
+  };
+  localStorage.setItem('onepieceGame', JSON.stringify(state));
+}
+
+// --- Restauration ---
+function loadState() {
+  const saved = localStorage.getItem('onepieceGame');
+  if(!saved) return;
+  const state = JSON.parse(saved);
+
+  timer = state.timer || TOTAL_TIME;
+  started = state.started || false;
+  hintsUsed = state.hintsUsed || 0;
+
+  // Restaurer affichage des indices
+  document.getElementById('currentHint').textContent = state.currentHint || "";
+  if(state.currentHint) document.getElementById('currentHint').classList.remove('hidden');
+  hintsList.innerHTML = "";
+  state.shownHints.forEach(txt=>{
+    const li = document.createElement('li');
+    li.textContent = txt;
+    hintsList.appendChild(li);
+  });
+
+  // Si jeu terminé → montrer équipage
+  if(state.gameEnded){
+    main.style.display = 'none';
+    aside.style.display = 'none';
+    crewScreen.classList.remove('hidden');
+    crewScreen.style.display = 'flex';
+  }
+
+  updateTimerDisplay();
+
+  if(started){
+    startTimer();
+  }
+}
+
+// --- Sauvegarde automatique toutes les 2 secondes
+setInterval(saveState, 2000);
+  
+// --- Vérifier si un QR Code a ajouté un indice ---
+const urlParams = new URLSearchParams(window.location.search);
+if(urlParams.has('hint')){
+  const step = parseInt(urlParams.get('hint'));
+  if(!isNaN(step) && step >=0 && step < hintsStore.length){
+    const currentHint = document.getElementById('currentHint');
+    currentHint.textContent = hintsStore[step];
+    currentHint.classList.remove('hidden');
+
+    const li = document.createElement('li');
+    li.textContent = hintsStore[step];
+    hintsList.appendChild(li);
+
+    hintsUsed++;
+    saveState();
+  }
+}
 
 
   const timerDisplay = document.getElementById('timerDisplay');
@@ -351,10 +419,14 @@ cameraInput.addEventListener('change', (event)=>{
   });
 
   updateTimerDisplay();
+  // Charger l'état du jeu à l'ouverture
+loadState();
+
 </script>
 
 
 </body>
 </html>
+
 
 
