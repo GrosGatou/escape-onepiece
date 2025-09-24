@@ -59,16 +59,9 @@
           </div>
         </div>
 
-<section class="flex items-center justify-center">
-  <img src="One piece/flag.jpeg" alt="Drapeau Luffy" class="w-40" />
-</section>
-
-<!-- Nouveau cadran QR -->
-<section id="qrHintSection" class="hidden flex flex-col items-start gap-2 mt-4 p-3 bg-white rounded border">
-  <h4 class="font-semibold">Résultat tatouage Barbe Blanche</h4>
-  <div id="qrHintContent" class="text-gray-800"></div>
-</section>
-
+        <section class="flex items-center justify-center">
+          <img src="One piece/flag.jpeg" alt="Drapeau Luffy" class="w-40" />
+        </section>
       </div>
     </main>
 
@@ -99,7 +92,12 @@
     <!-- Écran final Equipage -->
     <div id="crewScreen" class="hidden col-span-12 w-full flex justify-center items-center mt-6">
       <img src="One piece/Equipage.jpeg" alt="Equipage" class="max-w-full h-auto rounded-lg shadow-lg" />
+    </div>
 
+    <footer class="col-span-12 text-center mt-4 text-xs text-gray-700">
+      Test en local : place le dossier <code>One piece/</code> à côté du fichier HTML, et ouvre <code>escape-onepiece.html</code> dans ton navigateur.
+    </footer>
+  </div>
 
   <!-- MODALS FINISH / END -->
   <div id="finishModal" class="fixed inset-0 bg-black bg-opacity-40 hidden items-center justify-center">
@@ -146,16 +144,6 @@
     "Indice étape 4 : Avec mon sens de l'orientation je suis obligée de suivre l'ordre donné — Zoro",
     "Indice étape 5 : Hiiiii vite ! Usopp a le mal des transports, allons vite chercher des soins en ville — Chopper"
   ];
-  
-  // --- Vérifier si un QR Code a été scanné via l'URL ---
-const urlParams = new URLSearchParams(window.location.search);
-if(urlParams.has('indice')){
-  const qrStep = parseInt(urlParams.get('indice'));
-  if(!isNaN(qrStep) && qrStep >=0 && qrStep < hintsStore.length){
-    const qrContent = document.getElementById('qrHintContent');
-    qrContent.textContent = hintsStore[qrStep];
-  }
-}
 
   const timerDisplay = document.getElementById('timerDisplay');
   const startBtn = document.getElementById('startBtn');
@@ -318,5 +306,3 @@ if(urlParams.has('indice')){
 </script>
 </body>
 </html>
-
-
