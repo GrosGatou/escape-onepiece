@@ -20,413 +20,306 @@
   </style>
 </head>
 <body class="onepiece-bg min-h-screen flex items-center justify-center p-6">
-  <div class="max-w-4xl w-full grid grid-cols-12 gap-6">
-    <!-- HEADER -->
-    <header class="col-span-12 flex items-center justify-between mb-2">
-      <div class="flex items-center gap-4">
-        <div class="parchment p-3 flex items-center gap-3">
-          <img src="One piece/luffy.jpeg" alt="Luffy" class="logo" />
-          <div>
-            <h1 class="title-font text-2xl">Trouve le One Piece</h1>
-            <p class="text-xs">prends exemple sur moi, Monkey D Luffy</p>
-          </div>
+<div class="max-w-4xl w-full grid grid-cols-12 gap-6">
+  <!-- HEADER -->
+  <header class="col-span-12 flex items-center justify-between mb-2">
+    <div class="flex items-center gap-4">
+      <div class="parchment p-3 flex items-center gap-3">
+        <img src="One piece/luffy.jpeg" alt="Luffy" class="logo" />
+        <div>
+          <h1 class="title-font text-2xl">Trouve le One Piece</h1>
+          <p class="text-xs">prends exemple sur moi, Monkey D Luffy</p>
         </div>
       </div>
-      <div class="parchment p-3 text-right">
-        <div class="text-sm">Temps restant</div>
-        <div id="timerDisplay" class="text-2xl font-bold">60:00</div>
-      </div>
-    </header>
+    </div>
+    <div class="parchment p-3 text-right">
+      <div class="text-sm">Temps restant</div>
+      <div id="timerDisplay" class="text-2xl font-bold">60:00</div>
+    </div>
+  </header>
 
-    <!-- MAIN -->
-    <main class="col-span-8 scroll rope main-content">
-      <div class="flex flex-col gap-4">
-        <div class="flex items-center justify-between">
-          <div>
-            <button id="startBtn" class="px-4 py-2 rounded-lg bg-amber-500 hover:bg-amber-400 font-semibold">Démarrer (60 min)</button>
-            <button id="resetBtn" class="ml-3 px-3 py-2 rounded-lg bg-gray-200 hover:bg-gray-100">Réinitialiser</button>
-          </div>
-
-          <div class="flex flex-col gap-2 relative">
-            <button id="hintBtn" class="px-3 py-2 rounded-lg bg-rose-500 text-white">Indices (5 max)</button>
-            <div id="hintSteps" class="absolute top-full left-0 mt-2 flex flex-col gap-2 hidden bg-white p-2 rounded shadow-lg z-10 w-max">
-              <button class="step-btn px-3 py-2 rounded bg-amber-400 text-white font-semibold" data-step="0">Step 1</button>
-              <button class="step-btn px-3 py-2 rounded bg-amber-400 text-white font-semibold" data-step="1">Step 2</button>
-              <button class="step-btn px-3 py-2 rounded bg-amber-400 text-white font-semibold" data-step="2">Step 3</button>
-              <button class="step-btn px-3 py-2 rounded bg-amber-400 text-white font-semibold" data-step="3">Step 4</button>
-              <button class="step-btn px-3 py-2 rounded bg-amber-400 text-white font-semibold" data-step="4">Step 5</button>
-            </div>
-          </div>
-
-          <div class="flex items-center gap-3">
-            <button id="qrBtn" class="px-3 py-2 rounded-lg bg-white border">📷 Scanner QR</button>
-            <input type="file" id="cameraInput" accept="image/*" capture="environment" class="hidden">
-          </div>
-          
+  <!-- MAIN -->
+  <main class="col-span-8 scroll rope main-content">
+    <div class="flex flex-col gap-4">
+      <div class="flex items-center justify-between">
+        <div>
+          <button id="startBtn" class="px-4 py-2 rounded-lg bg-amber-500 hover:bg-amber-400 font-semibold">Démarrer (60 min)</button>
+          <button id="resetBtn" class="ml-3 px-3 py-2 rounded-lg bg-gray-200 hover:bg-gray-100">Réinitialiser</button>
         </div>
 
+        <div class="flex flex-col gap-2 relative">
+          <button id="hintBtn" class="px-3 py-2 rounded-lg bg-rose-500 text-white">Indices (5 max)</button>
+          <div id="hintSteps" class="absolute top-full left-0 mt-2 flex flex-col gap-2 hidden bg-white p-2 rounded shadow-lg z-10 w-max">
+            <button class="step-btn px-3 py-2 rounded bg-amber-400 text-white font-semibold" data-step="0">Step 1</button>
+            <button class="step-btn px-3 py-2 rounded bg-amber-400 text-white font-semibold" data-step="1">Step 2</button>
+            <button class="step-btn px-3 py-2 rounded bg-amber-400 text-white font-semibold" data-step="2">Step 3</button>
+            <button class="step-btn px-3 py-2 rounded bg-amber-400 text-white font-semibold" data-step="3">Step 4</button>
+            <button class="step-btn px-3 py-2 rounded bg-amber-400 text-white font-semibold" data-step="4">Step 5</button>
+          </div>
+        </div>
 
-
-        <section class="flex items-center justify-center">
-          <img src="One piece/flag.jpeg" alt="Drapeau Luffy" class="w-40" />
-        </section>
+        <div class="flex items-center gap-3">
+          <button id="qrBtn" class="px-3 py-2 rounded-lg bg-white border">📷 Scanner QR</button>
+          <input type="file" id="cameraInput" accept="image/*" capture="environment" class="hidden">
+        </div>
       </div>
-    </main>
 
-    <!-- ASIDE -->
-    <aside class="col-span-4 scroll">
-      <h3 class="text-lg font-semibold mb-3">Indices (coût : 5min)</h3>
+      <section class="flex items-center justify-center">
+        <img src="One piece/flag.jpeg" alt="Drapeau Luffy" class="w-40" />
+      </section>
+    </div>
+  </main>
 
-<!-- Bloc pour afficher l'indice actuel plus en avant -->
-<div id="currentHint" class="mb-4 p-3 bg-yellow-100 border-l-4 border-amber-500 rounded font-semibold text-gray-800 hidden"></div>
+  <!-- ASIDE -->
+  <aside class="col-span-4 scroll">
+    <h3 class="text-lg font-semibold mb-3">Indices (coût : 5min)</h3>
 
-<ol id="hintsList" class="list-decimal pl-5 space-y-2 text-sm text-gray-800"></ol>
+    <div id="currentHint" class="mb-4 p-3 bg-yellow-100 border-l-4 border-amber-500 rounded font-semibold text-gray-800 hidden"></div>
+    <ol id="hintsList" class="list-decimal pl-5 space-y-2 text-sm text-gray-800"></ol>
 
+    <div id="namiModal" class="fixed inset-0 bg-black bg-opacity-40 hidden items-center justify-center">
+      <div class="parchment p-6 w-11/12 max-w-xl flex items-center gap-4">
+        <img src="One piece/nami.jpeg" alt="Nami" class="w-20 h-20 object-cover rounded-full flex-shrink-0" />
+        <div id="namiMessage" class="mt-2 font-semibold text-sm text-gray-800"></div>
+        <div class="ml-auto mt-4 flex gap-2">
+          <button id="namiCloseBtn" class="px-4 py-2 rounded bg-lime-500">Ok</button>
+          <button id="namiRefuseBtn" class="px-4 py-2 rounded bg-red-500 text-white">Je suis un rat</button>
+        </div>
+      </div>
+    </div>
 
-      <!-- Modal Nami -->
-      <div id="namiModal" class="fixed inset-0 bg-black bg-opacity-40 hidden items-center justify-center">
-        <div class="parchment p-6 w-11/12 max-w-xl flex items-center gap-4">
-          <img src="One piece/nami.jpeg" alt="Nami" class="w-20 h-20 object-cover rounded-full flex-shrink-0" />
-          <div id="namiMessage" class="mt-2 font-semibold text-sm text-gray-800"></div>
-          <div class="ml-auto mt-4 flex gap-2">
-  <button id="namiCloseBtn" class="px-4 py-2 rounded bg-lime-500">Ok</button>
-  <button id="namiRefuseBtn" class="px-4 py-2 rounded bg-red-500 text-white">Je suis un rat</button>
+    <div class="mt-6">
+      <h3 class="text-lg font-semibold">Scans & résultats</h3>
+      <div id="scanOutput" class="mt-2 p-3 bg-white rounded-md border h-32 overflow-auto"></div>
+    </div>
+
+    <div class="mt-6 text-center">
+      <button id="finishBtn" class="px-4 py-2 rounded-lg bg-lime-500">Terminer le jeu</button>
+    </div>
+  </aside>
+
+  <div id="crewScreen" class="hidden col-span-12 w-full flex justify-center items-center mt-6">
+    <img src="One piece/Equipage.jpeg" alt="Equipage" class="max-w-full h-auto rounded-lg shadow-lg" />
+  </div>
+
+  <footer class="col-span-12 text-center mt-4 text-xs text-gray-700">
+    Test en local : place le dossier <code>One piece/</code> à côté du fichier HTML, et ouvre <code>escape-onepiece.html</code> dans ton navigateur. 
+    Pour la caméra, sert le site en HTTPS ou sur localhost.
+  </footer>
 </div>
 
-        </div>
-      </div>
-
-      <ol id="hintsList" class="list-decimal pl-5 space-y-2 text-sm text-gray-800"></ol>
-
-      <div class="mt-6">
-        <h3 class="text-lg font-semibold">Scans & résultats</h3>
-        <div id="scanOutput" class="mt-2 p-3 bg-white rounded-md border h-32 overflow-auto"></div>
-      </div>
-
-      <div class="mt-6 text-center">
-        <button id="finishBtn" class="px-4 py-2 rounded-lg bg-lime-500">Terminer le jeu</button>
-      </div>
-    </aside>
-
-    <!-- Écran final Equipage -->
-    <div id="crewScreen" class="hidden col-span-12 w-full flex justify-center items-center mt-6">
-      <img src="One piece/Equipage.jpeg" alt="Equipage" class="max-w-full h-auto rounded-lg shadow-lg" />
+<!-- MODALS -->
+<div id="finishModal" class="fixed inset-0 bg-black bg-opacity-40 hidden items-center justify-center">
+  <div class="parchment p-6 w-11/12 max-w-xl">
+    <h3 class="text-2xl title-font mb-4">Avez-vous vraiment terminé ?</h3>
+    <div id="finishChoices" class="flex gap-4">
+      <button id="finishYes" class="px-4 py-2 rounded bg-amber-500">Oui</button>
+      <button id="finishNo" class="px-4 py-2 rounded bg-gray-300">Non</button>
     </div>
-
-    <footer class="col-span-12 text-center mt-4 text-xs text-gray-700">
-      Test en local : place le dossier <code>One piece/</code> à côté du fichier HTML, et ouvre <code>escape-onepiece.html</code> dans ton navigateur. 
-      Pour la caméra, sert le site en HTTPS ou sur localhost.
-    </footer>
-  </div>
-
-  <!-- MODALS -->
-  <!-- Modal Terminer -->
-  <div id="finishModal" class="fixed inset-0 bg-black bg-opacity-40 hidden items-center justify-center">
-    <div class="parchment p-6 w-11/12 max-w-xl">
-      <h3 class="text-2xl title-font mb-4">Avez-vous vraiment terminé ?</h3>
-      <div id="finishChoices" class="flex gap-4">
-        <button id="finishYes" class="px-4 py-2 rounded bg-amber-500">Oui</button>
-        <button id="finishNo" class="px-4 py-2 rounded bg-gray-300">Non</button>
-      </div>
-      <div id="finishPhrase" class="mt-4 font-semibold"></div>
-      <div id="finishCloseContainer" class="mt-4 hidden text-center">
-        <button id="finishCloseBtn" class="px-4 py-2 rounded bg-lime-500">Terminé</button>
-      </div>
+    <div id="finishPhrase" class="mt-4 font-semibold"></div>
+    <div id="finishCloseContainer" class="mt-4 hidden text-center">
+      <button id="finishCloseBtn" class="px-4 py-2 rounded bg-lime-500">Terminé</button>
     </div>
   </div>
+</div>
 
-  <!-- Modal Moussaillon final -->
-  <div id="endModal" class="fixed inset-0 bg-black bg-opacity-40 hidden items-center justify-center">
-    <div class="parchment p-6 w-11/12 max-w-xl">
-      <h3 class="text-2xl title-font mb-4">Alors Moussaillon, tu as trouvé le One Piece ?</h3>
-      <div id="endChoices" class="flex gap-4">
-        <button id="btnYes" class="px-4 py-2 rounded bg-amber-500">Évidemment</button>
-        <button id="btnNo" class="px-4 py-2 rounded bg-gray-300">Non</button>
-      </div>
-      <div id="endPhrase" class="mt-4 font-semibold"></div>
-      <div id="closeBtnContainer" class="mt-4 hidden text-center">
-        <button id="closeBtn" class="px-4 py-2 rounded bg-lime-500">Terminé</button>
-      </div>
+<div id="endModal" class="fixed inset-0 bg-black bg-opacity-40 hidden items-center justify-center">
+  <div class="parchment p-6 w-11/12 max-w-xl">
+    <h3 class="text-2xl title-font mb-4">Alors Moussaillon, tu as trouvé le One Piece ?</h3>
+    <div id="endChoices" class="flex gap-4">
+      <button id="btnYes" class="px-4 py-2 rounded bg-amber-500">Évidemment</button>
+      <button id="btnNo" class="px-4 py-2 rounded bg-gray-300">Non</button>
+    </div>
+    <div id="endPhrase" class="mt-4 font-semibold"></div>
+    <div id="closeBtnContainer" class="mt-4 hidden text-center">
+      <button id="closeBtn" class="px-4 py-2 rounded bg-lime-500">Terminé</button>
     </div>
   </div>
+</div>
 
 <script>
-  const MAX_HINTS = 5;
-  const HINT_PENALTY = 300; 
-  const TOTAL_TIME = 3600;
+const MAX_HINTS = 5;
+const HINT_PENALTY = 300; 
+const TOTAL_TIME = 3600;
 
-  let timer = TOTAL_TIME;
-  let timerInterval = null;
-  let started = false;
-  let hintsUsed = 0;
- const hintsStore = [
+let timer = TOTAL_TIME;
+let timerInterval = null;
+let started = false;
+let hintsUsed = 0;
+const hintsStore = [
   "Indice étape 1 : Pff, pourquoi faut-il toujours partager les trésors avec la famille… — Nami",
   "Indice étape 2 : C’est étrange… des lignes se dessinent sur le papier, mais aucun hiéroglyphe visible — Robin",
   "Indice étape 3 : Arrr… j'ai jamais aimé le vin… — Brawk !",
   "Indice étape 4 : Avec mon sens de l'orientation je suis obligée de suivre l'ordre donné — Zoro",
   "Indice étape 5 : Hiiiii vite ! Usopp a le mal des transports, allons vite chercher des soins en ville — Chopper"
 ];
-// --- Sauvegarde dans localStorage ---
-function saveState() {
+
+const timerDisplay = document.getElementById('timerDisplay');
+const startBtn = document.getElementById('startBtn');
+const resetBtn = document.getElementById('resetBtn');
+const hintBtn = document.getElementById('hintBtn');
+const hintSteps = document.getElementById('hintSteps');
+const hintsList = document.getElementById('hintsList');
+const scanOutput = document.getElementById('scanOutput');
+const qrBtn = document.getElementById('qrBtn');
+const cameraInput = document.getElementById('cameraInput');
+const finishBtn = document.getElementById('finishBtn');
+const crewScreen = document.getElementById('crewScreen');
+const main = document.querySelector('main');
+const aside = document.querySelector('aside');
+
+// --- Timer ---
+function formatTime(s){ const mm = Math.floor(s/60).toString().padStart(2,'0'); const ss = (s%60).toString().padStart(2,'0'); return `${mm}:${ss}`; }
+function updateTimerDisplay(){ timerDisplay.textContent = formatTime(timer); }
+function startTimer(){ 
+  if(started) return; 
+  started = true; 
+  timerInterval = setInterval(()=>{ 
+    if(timer<=0){ clearInterval(timerInterval); timer=0; updateTimerDisplay(); endGame(); return; } 
+    timer -= 1; updateTimerDisplay(); 
+  },1000); 
+}
+function resetGame(){ clearInterval(timerInterval); timer = TOTAL_TIME; started = false; hintsUsed = 0; hintsList.innerHTML=''; scanOutput.innerHTML=''; updateTimerDisplay(); }
+
+startBtn.addEventListener('click', ()=>{ startTimer(); });
+resetBtn.addEventListener('click', ()=>{ if(confirm('Réinitialiser le jeu ?')) resetGame(); });
+
+// --- Step indices ---
+const stepBtns = document.querySelectorAll('.step-btn');
+hintBtn.addEventListener('click', ()=>{ if(!started){ alert('Démarre le timer, tricheur.'); return; } hintSteps.classList.toggle('hidden'); });
+
+stepBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const step = parseInt(btn.dataset.step);
+    if(hintsUsed >= MAX_HINTS){ alert("Plus d'indices disponibles."); return; }
+    if(btn.disabled) return;
+
+    hintSteps.classList.add('hidden'); 
+
+    const namiModal = document.getElementById('namiModal');
+    const namiMessage = document.getElementById('namiMessage');
+    namiMessage.textContent = "Ohohoh ! Un indice te coûtera 5 Berry... euh, 5 minutes je voulais dire. — Nami";
+    namiModal.classList.remove('hidden');
+    namiModal.style.display = 'flex';
+
+    const okBtn = document.getElementById('namiCloseBtn');
+    okBtn.onclick = ()=>{
+      if(timer <= HINT_PENALTY){ if(!confirm("Prendre cet indice va terminer le temps restant — confirmer ?")) { namiModal.classList.add('hidden'); return; } }
+      timer = Math.max(0, timer - HINT_PENALTY);
+      hintsUsed += 1;
+
+      const currentHint = document.getElementById('currentHint');
+      currentHint.textContent = hintsStore[step];
+      currentHint.classList.remove('hidden');
+
+      const li = document.createElement('li');
+      li.textContent = hintsStore[step];
+      hintsList.appendChild(li);
+
+      btn.disabled = true;
+      btn.classList.add('bg-gray-400','cursor-not-allowed');
+      btn.classList.remove('bg-amber-400');
+
+      namiModal.classList.add('hidden');
+      namiModal.style.display='none';
+      updateTimerDisplay();
+      if(timer === 0) endGame();
+    };
+  });
+});
+
+// --- Nami modal buttons ---
+document.getElementById('namiCloseBtn').addEventListener('click', ()=>{ const namiModal = document.getElementById('namiModal'); namiModal.classList.add('hidden'); namiModal.style.display='none'; });
+document.getElementById('namiRefuseBtn').addEventListener('click', ()=>{ const namiModal = document.getElementById('namiModal'); namiModal.classList.add('hidden'); namiModal.style.display = 'none'; });
+
+// --- QR Camera + Redirection ---
+qrBtn.addEventListener('click', ()=>{ cameraInput.click(); });
+cameraInput.addEventListener('change', (event)=>{
+  if(event.target.files.length>0){
+    const stepHint = 0; // indice que le QR débloque
+    const baseUrl = window.location.href.split('?')[0];
+    window.location.href = `${baseUrl}?hint=${stepHint}`;
+  }
+});
+
+// --- LocalStorage pour garder timer/indices ---
+function saveState(){
   const state = {
     timer,
     started,
     hintsUsed,
-    shownHints: Array.from(document.querySelectorAll('#hintsList li')).map(li => li.textContent),
     currentHint: document.getElementById('currentHint').textContent,
-    gameEnded: crewScreen.style.display === 'flex'
+    gameEnded: crewScreen.style.display==='flex'
   };
   localStorage.setItem('onepieceGame', JSON.stringify(state));
 }
-
-// --- Restauration ---
-function loadState() {
+function loadState(){
   const saved = localStorage.getItem('onepieceGame');
   if(!saved) return;
   const state = JSON.parse(saved);
-
   timer = state.timer || TOTAL_TIME;
   started = state.started || false;
   hintsUsed = state.hintsUsed || 0;
 
-  // Restaurer affichage des indices
-  document.getElementById('currentHint').textContent = state.currentHint || "";
+  document.getElementById('currentHint').textContent = state.currentHint||"";
   if(state.currentHint) document.getElementById('currentHint').classList.remove('hidden');
-  hintsList.innerHTML = "";
-  state.shownHints.forEach(txt=>{
-    const li = document.createElement('li');
-    li.textContent = txt;
-    hintsList.appendChild(li);
-  });
 
-  // Si jeu terminé → montrer équipage
   if(state.gameEnded){
-    main.style.display = 'none';
-    aside.style.display = 'none';
+    main.style.display='none';
+    aside.style.display='none';
     crewScreen.classList.remove('hidden');
-    crewScreen.style.display = 'flex';
+    crewScreen.style.display='flex';
   }
 
   updateTimerDisplay();
-
-  if(started){
-    startTimer();
-  }
+  if(started) startTimer();
 }
-
-// --- Sauvegarde automatique toutes les 2 secondes
-setInterval(saveState, 2000);
-  
-// --- Vérifier si un QR Code a ajouté un indice ---
-const urlParams = new URLSearchParams(window.location.search);
-if(urlParams.has('hint')){
-  const step = parseInt(urlParams.get('hint'));
-  if(!isNaN(step) && step >=0 && step < hintsStore.length){
-    const currentHint = document.getElementById('currentHint');
-    currentHint.textContent = hintsStore[step];
-    currentHint.classList.remove('hidden');
-
-    const li = document.createElement('li');
-    li.textContent = hintsStore[step];
-    hintsList.appendChild(li);
-
-    hintsUsed++;
-    saveState();
-  }
-}
-
-
-  const timerDisplay = document.getElementById('timerDisplay');
-  const startBtn = document.getElementById('startBtn');
-  const resetBtn = document.getElementById('resetBtn');
-  const hintBtn = document.getElementById('hintBtn');
-  const hintSteps = document.getElementById('hintSteps');
-  const hintsList = document.getElementById('hintsList');
-  const scanOutput = document.getElementById('scanOutput');
-  const qrBtn = document.getElementById('qrBtn');
-  const qrSection = document.getElementById('qrSection');
-  const qrResult = document.getElementById('qr-result');
-  const finishBtn = document.getElementById('finishBtn');
-
-  const finishModal = document.getElementById('finishModal');
-  const finishYes = document.getElementById('finishYes');
-  const finishNo = document.getElementById('finishNo');
-  const finishChoices = document.getElementById('finishChoices');
-  const finishPhrase = document.getElementById('finishPhrase');
-  const finishCloseContainer = document.getElementById('finishCloseContainer');
-
-  const endModal = document.getElementById('endModal');
-  const btnYes = document.getElementById('btnYes');
-  const btnNo = document.getElementById('btnNo');
-  const endPhrase = document.getElementById('endPhrase');
-  const closeBtnContainer = document.getElementById('closeBtnContainer');
-  const closeBtn = document.getElementById('closeBtn');
-
-  const crewScreen = document.getElementById('crewScreen');
-  const main = document.querySelector('main');
-  const aside = document.querySelector('aside');
-
-  function formatTime(s){
-    const mm = Math.floor(s/60).toString().padStart(2,'0');
-    const ss = (s%60).toString().padStart(2,'0');
-    return `${mm}:${ss}`;
-  }
-
-  function updateTimerDisplay(){ timerDisplay.textContent = formatTime(timer); }
-
-  function startTimer(){
-    if(started) return;
-    started = true;
-    timerInterval = setInterval(()=>{
-      if(timer<=0){ clearInterval(timerInterval); timer=0; updateTimerDisplay(); endGame(); return; }
-      timer -= 1; updateTimerDisplay();
-    },1000);
-  }
-
-  function resetGame(){
-    clearInterval(timerInterval);
-    timer = TOTAL_TIME; started = false; hintsUsed = 0;
-    hintsList.innerHTML=''; scanOutput.innerHTML=''; qrResult.innerHTML=''; updateTimerDisplay();
-  }
-
-  startBtn.addEventListener('click', ()=>{ startTimer(); });
-  resetBtn.addEventListener('click', ()=>{ if(confirm('Réinitialiser le jeu ?')) resetGame(); });
-
-  // --- Step indices ---
-  const stepBtns = document.querySelectorAll('.step-btn');
-  hintBtn.addEventListener('click', ()=>{
-    if(!started){ alert('Démarre le timer, tricheur.'); return; }
-    hintSteps.classList.toggle('hidden');
-  });
-
-  stepBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const step = parseInt(btn.dataset.step);
-      if(hintsUsed >= MAX_HINTS){ alert("Plus d'indices disponibles."); return; }
-      if(btn.disabled) return;
-
-      hintSteps.classList.add('hidden'); 
-
-      const namiModal = document.getElementById('namiModal');
-      const namiMessage = document.getElementById('namiMessage');
-      namiMessage.textContent = "Ohohoh ! Un indice te coûtera 5 Berry... euh, 5 minutes je voulais dire. — Nami";
-      namiModal.classList.remove('hidden');
-      namiModal.style.display = 'flex';
-
-      const okBtn = document.getElementById('namiCloseBtn');
-      okBtn.onclick = ()=>{
-        if(timer <= HINT_PENALTY){
-          if(!confirm("Prendre cet indice va terminer le temps restant — confirmer ?")) {
-            namiModal.classList.add('hidden');
-            return;
-          }
-        }
-        timer = Math.max(0, timer - HINT_PENALTY);
-        hintsUsed += 1;
-
-        const currentHint = document.getElementById('currentHint');
-        currentHint.textContent = hintsStore[step];
-        currentHint.classList.remove('hidden');
-
-        btn.disabled = true;
-        btn.classList.add('bg-gray-400', 'cursor-not-allowed');
-        btn.classList.remove('bg-amber-400');
-
-        namiModal.classList.add('hidden');
-        namiModal.style.display='none';
-        updateTimerDisplay();
-        if(timer === 0) endGame();
-      };
-    });
-  });
-
-  document.getElementById('namiCloseBtn').addEventListener('click', ()=>{
-    const namiModal = document.getElementById('namiModal');
-    namiModal.classList.add('hidden');
-    namiModal.style.display='none';
-  });
-  document.getElementById('namiRefuseBtn').addEventListener('click', ()=>{
-    const namiModal = document.getElementById('namiModal');
-    namiModal.classList.add('hidden');
-    namiModal.style.display = 'none';
-  });
-
-// --- QR Code (ouvre la caméra native) ---
-const cameraInput = document.getElementById('cameraInput');
-
-qrBtn.addEventListener('click', ()=>{
-  // Simule un clic sur l'input caché
-  cameraInput.click();
-});
-
-// Quand une photo est prise / choisie
-cameraInput.addEventListener('change', (event)=>{
-  if(event.target.files.length > 0){
-    const file = event.target.files[0];
-    scanOutput.innerHTML += `<div>📷 Photo sélectionnée : ${file.name}</div>`;
+setInterval(saveState,2000);
+window.addEventListener('load', ()=>{
+  loadState();
+  const urlParams = new URLSearchParams(window.location.search);
+  if(urlParams.has('hint')){
+    const step = parseInt(urlParams.get('hint'));
+    if(!isNaN(step) && step>=0 && step<hintsStore.length){
+      const currentHint = document.getElementById('currentHint');
+      currentHint.textContent = hintsStore[step];
+      currentHint.classList.remove('hidden');
+      hintsUsed++;
+    }
   }
 });
 
+// --- End Game Moussaillon ---
+function endGame(){ document.getElementById('endModal').classList.remove('hidden'); document.getElementById('endModal').style.display='flex'; }
 
-  // --- End Game Moussaillon ---
-  function endGame(){ endModal.classList.remove('hidden'); endModal.style.display='flex'; }
+// --- Terminer bouton ---
+finishBtn.addEventListener('click', ()=>{
+  clearInterval(timerInterval); timer=0; updateTimerDisplay();
+  document.getElementById('finishModal').classList.remove('hidden');
+  document.getElementById('finishModal').style.display='flex';
+});
 
-  btnYes.addEventListener('click', ()=>{
-    document.getElementById('endChoices').style.display = 'none';
-    endPhrase.textContent = "Tu fais maintenant partie de l'équipage du Chapeau de Paille — fête au banquet !";
-    closeBtnContainer.classList.remove('hidden');
-  });
+// --- Boutons fermeture/confirmation ---
+document.getElementById('finishYes').addEventListener('click', ()=>{
+  document.getElementById('finishChoices').style.display='none';
+  document.getElementById('endModal').classList.remove('hidden');
+  document.getElementById('endModal').style.display='flex';
+  document.getElementById('finishModal').classList.add('hidden');
+});
+document.getElementById('finishNo').addEventListener('click', ()=>{
+  document.getElementById('finishModal').classList.add('hidden');
+  document.getElementById('finishModal').style.display='none';
+});
+document.getElementById('closeBtn').addEventListener('click', ()=>{
+  main.style.display='none';
+  aside.style.display='none';
+  document.getElementById('finishModal').style.display='none';
+  document.getElementById('endModal').style.display='none';
+  crewScreen.classList.remove('hidden');
+  crewScreen.style.display='flex';
+});
 
-  btnNo.addEventListener('click', ()=>{
-    document.getElementById('endChoices').style.display = 'none';
-    endPhrase.textContent = "Pas grave, moussaillon : la vraie aventure, c'est le voyage. Réessaie ou savoure un apéro !";
-    closeBtnContainer.classList.remove('hidden');
-  });
-
-  // --- Terminer Modal ---
-  finishBtn.addEventListener('click', ()=>{
-    clearInterval(timerInterval); 
-    timer = 0; 
-    updateTimerDisplay();
-    finishModal.classList.remove('hidden');
-    finishModal.style.display = 'flex';
-    finishChoices.style.display='flex';
-    finishPhrase.textContent='';
-    finishCloseContainer.classList.add('hidden');
-  });
-
-  finishYes.addEventListener('click', ()=>{
-    finishChoices.style.display = 'none';
-    finishPhrase.textContent = '';
-    endModal.classList.remove('hidden');
-    endModal.style.display='flex';
-    finishModal.classList.add('hidden');
-  });
-
-  finishNo.addEventListener('click', ()=>{
-    finishModal.classList.add('hidden');    
-    finishModal.style.display = 'none';    
-  });
-
-  closeBtn.addEventListener('click', ()=>{
-    main.style.display = 'none';
-    aside.style.display = 'none';
-    finishModal.style.display = 'none';
-    endModal.style.display = 'none';
-
-    crewScreen.classList.remove('hidden');
-    crewScreen.style.display = 'flex';
-  });
-
-  updateTimerDisplay();
-  // Charger l'état du jeu à l'ouverture
-loadState();
-
+updateTimerDisplay();
 </script>
-
-
 </body>
 </html>
-
-
-
