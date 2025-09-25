@@ -54,11 +54,18 @@ function showIndice() {
 btnOui.addEventListener('click', showIndice);
 btnEvidemment.addEventListener('click', showIndice);
 
-// Sauvegarder l'indice et fermer la page (on pourra remplacer par redirection après)
 saveBtn.addEventListener('click', () => {
-  alert("Indice sauvegardé ! Tu peux le retrouver sur le guide principal.  Tourne la page et retourne-y marin d'eau douce");
-  window.close(); // ferme ce site
+  const indice = 'Le banquet commence toujours autour du feu, et c’est souvent là que se révèle les secrets...';
+  
+  // On écrit l'indice dans localStorage
+  localStorage.setItem('sharedIndice', indice);
+
+  alert("Indice sauvegardé ! Tu peux le retrouver sur le site principal. Tourne la page et retourne-y, moussaillon !");
+  
+  // On peut fermer la page ou juste laisser l'utilisateur la fermer
+  window.close(); 
 });
+
 </script>
 
 </body>
