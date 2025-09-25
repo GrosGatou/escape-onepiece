@@ -39,7 +39,7 @@
     </header>
 
     <!-- MAIN -->
-    <main class="col-span-8 scroll rope main-content">
+    <main class="col-span-8 scroll rope main-content self-start">
       <div class="flex flex-col gap-4">
         <div class="flex items-center justify-between">
           <div>
@@ -205,19 +205,27 @@
     },1000);
   }
 
- function resetGame(){
+function resetGame(){
   clearInterval(timerInterval);
   timer = TOTAL_TIME;
   started = false;
   hintsUsed = 0;
 
-  hintsList.innerHTML='';
-  scanOutput.innerHTML='';
+  hintsList.innerHTML = '';
+  scanOutput.innerHTML = '';
   updateTimerDisplay(); 
 
   // Réinitialiser l’affichage de l’indice courant
   const currentHint = document.getElementById('currentHint');
   currentHint.textContent = "";
+  currentHint.classList.add('hidden');
+
+  // Réactiver les boutons d'indices
+  stepBtns.forEach(btn => {
+    btn.disabled = false;
+    btn.classList.remove('bg-gray-400', 'cursor-not-allowed');
+    btn.classList.add('bg-amber-400');
+  });
 }
 
 
@@ -342,5 +350,6 @@ finishYes.addEventListener('click', ()=>{
 
 </body>
 </html>
+
 
 
