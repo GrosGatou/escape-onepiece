@@ -203,11 +203,22 @@
     },1000);
   }
 
-  function resetGame(){
-    clearInterval(timerInterval);
-    timer = TOTAL_TIME; started = false; hintsUsed = 0;
-    hintsList.innerHTML=''; scanOutput.innerHTML=''; qrResult.innerHTML=''; updateTimerDisplay();
-  }
+ function resetGame(){
+  clearInterval(timerInterval);
+  timer = TOTAL_TIME;
+  started = false;
+  hintsUsed = 0;
+
+  hintsList.innerHTML='';
+  scanOutput.innerHTML='';
+  updateTimerDisplay(); 
+
+  // Réinitialiser l’affichage de l’indice courant
+  const currentHint = document.getElementById('currentHint');
+  currentHint.textContent = "";
+  currentHint.classList.add('hidden');
+}
+
 
   startBtn.addEventListener('click', ()=>{ startTimer(); });
   resetBtn.addEventListener('click', ()=>{ if(confirm('Réinitialiser le jeu ?')) resetGame(); });
@@ -288,24 +299,27 @@
   });
 
   // --- Terminer Modal ---
-  finishBtn.addEventListener('click', ()=>{
-    clearInterval(timerInterval); 
-    timer = 0; 
-    updateTimerDisplay();
-    finishModal.classList.remove('hidden');
-    finishModal.style.display = 'flex';
-    finishChoices.style.display='flex';
-    finishPhrase.textContent='';
-    finishCloseContainer.classList.add('hidden');
-  });
+ finishBtn.addEventListener('click', ()=>{
+  finishModal.classList.remove('hidden');
+  finishModal.style.display = 'flex';
+  finishChoices.style.display='flex';
+  finishPhrase.textContent='';
+  finishCloseContainer.classList.add('hidden');
+});
 
-  finishYes.addEventListener('click', ()=>{
-    finishChoices.style.display = 'none';
-    finishPhrase.textContent = '';
-    endModal.classList.remove('hidden');
-    endModal.style.display='flex';
-    finishModal.classList.add('hidden');
-  });
+
+finishYes.addEventListener('click', ()=>{
+  clearInterval(timerInterval);
+  timer = 0;
+  updateTimerDisplay();
+
+  finishChoices.style.display = 'none';
+  finishPhrase.textContent = '';
+  endModal.classList.remove('hidden');
+  endModal.style.display='flex';
+  finishModal.classList.add('hidden');
+});
+
 
   finishNo.addEventListener('click', ()=>{
     finishModal.classList.add('hidden');    
@@ -328,3 +342,4 @@
 
 </body>
 </html>
+
