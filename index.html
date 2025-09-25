@@ -171,6 +171,8 @@ let hintsUsed = 0;
   const hintsList = document.getElementById('hintsList');
   const scanOutput = document.getElementById('scanOutput');
   const finishBtn = document.getElementById('finishBtn');
+  const pauseBtn = document.getElementById('pauseBtn');
+
 
   const finishModal = document.getElementById('finishModal');
   const finishYes = document.getElementById('finishYes');
@@ -358,12 +360,11 @@ finishYes.addEventListener('click', ()=>{
     aside.style.display = 'none';
     finishModal.style.display = 'none';
     endModal.style.display = 'none';
+    pauseBtn.style.display = 'none'; 
 
     crewScreen.classList.remove('hidden');
     crewScreen.style.display = 'flex';
   });
-
-  const pauseBtn = document.getElementById('pauseBtn');
 pauseBtn.addEventListener('click', ()=>{
   paused = !paused; // on inverse l’état
   pauseBtn.textContent = paused ? "Reprendre" : "Pause"; // on change le texte du bouton
@@ -376,6 +377,7 @@ updateTimerDisplay();
 
 </body>
 </html>
+
 
 
 
