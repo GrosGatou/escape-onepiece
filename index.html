@@ -252,11 +252,16 @@ stepBtns.forEach(btn => {
     hintSteps.classList.toggle('hidden');
   });
 
-  stepBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const step = parseInt(btn.dataset.step);
-      if(hintsUsed >= MAX_HINTS){ alert("Plus d'indices disponibles."); return; }
-      if(btn.disabled) return;
+stepBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const step = parseInt(btn.dataset.step);
+    if(paused){ 
+      alert("Impossible de prendre un indice pendant la pause. Relance le timer d’abord !");
+      return;
+    }
+    if(hintsUsed >= MAX_HINTS){ alert("Plus d'indices disponibles."); return; }
+    if(btn.disabled) return;
+
 
       hintSteps.classList.add('hidden'); 
 
@@ -371,6 +376,7 @@ updateTimerDisplay();
 
 </body>
 </html>
+
 
 
 
