@@ -32,10 +32,12 @@
           </div>
         </div>
       </div>
-      <div class="parchment p-3 text-right">
-        <div class="text-sm">Temps restant</div>
-        <div id="timerDisplay" class="text-2xl font-bold">60:00</div>
-      </div>
+<div class="parchment p-3 text-right">
+  <div class="text-sm">Temps restant</div>
+  <div id="timerDisplay" class="text-2xl font-bold">60:00</div>
+  <button id="pauseBtn" class="mt-2 px-3 py-1 rounded bg-blue-500 text-white">Pause</button>
+</div>
+
     </header>
 
     <!-- MAIN -->
@@ -146,10 +148,12 @@
   const HINT_PENALTY = 300; 
   const TOTAL_TIME = 3600;
 
-  let timer = TOTAL_TIME;
-  let timerInterval = null;
-  let started = false;
-  let hintsUsed = 0;
+let timer = TOTAL_TIME;
+let timerInterval = null;
+let started = false;
+let paused = false;   // ✅ ajoute ici
+let hintsUsed = 0;
+
  const hintsStore = [
   "Indice étape 1 : Pff, pourquoi faut-il toujours partager les trésors avec la famille… — Nami",
   "Indice étape 2 : C’est étrange… des lignes se dessinent sur le papier, mais aucun hiéroglyphe visible — Robin",
@@ -194,14 +198,24 @@
 
   function updateTimerDisplay(){ timerDisplay.textContent = formatTime(timer); }
 
-  function startTimer(){
-    if(started) return;
-    started = true;
-    timerInterval = setInterval(()=>{
-      if(timer<=0){ clearInterval(timerInterval); timer=0; updateTimerDisplay(); endGame(); return; }
-      timer -= 1; updateTimerDisplay();
-    },1000);
-  }
+function startTimer(){
+  if(started) return;
+  started = true;
+  timerInterval = setInterval(()=>{
+    if(!paused){   // ✅ on ne décrémente que si pas en pause
+      if(timer <= 0){ 
+        clearInterval(timerInterval); 
+        timer = 0; 
+        updateTimerDisplay(); 
+        endGame(); 
+        return; 
+      }
+      timer -= 1; 
+      updateTimerDisplay();
+    }
+  },1000);
+}
+
 
 function resetGame(){
   clearInterval(timerInterval);
@@ -344,12 +358,20 @@ finishYes.addEventListener('click', ()=>{
     crewScreen.style.display = 'flex';
   });
 
-  updateTimerDisplay();
+  const pauseBtn = document.getElementById('pauseBtn');
+pauseBtn.addEventListener('click', ()=>{
+  paused = !paused; // on inverse l’état
+  pauseBtn.textContent = paused ? "Reprendre" : "Pause"; // on change le texte du bouton
+});
+
+updateTimerDisplay();
+
 </script>
 
 
 </body>
 </html>
+
 
 
 
