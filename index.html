@@ -57,7 +57,15 @@
               <button class="step-btn px-3 py-2 rounded bg-amber-400 text-white font-semibold" data-step="4">Step 5</button>
             </div>
           </div>
+
+          <div class="flex items-center gap-3">
+            <button id="qrBtn" class="px-3 py-2 rounded-lg bg-white border">📷 Scanner QR</button>
+            <input type="file" id="cameraInput" accept="image/*" capture="environment" class="hidden">
+          </div>
+          
         </div>
+
+
 
         <section class="flex items-center justify-center">
           <img src="One piece/flag.jpeg" alt="Drapeau Luffy" class="w-40" />
@@ -69,8 +77,11 @@
     <aside class="col-span-4 scroll">
       <h3 class="text-lg font-semibold mb-3">Indices (coût : 5min)</h3>
 
-      <div id="currentHint" class="mb-4 p-3 bg-yellow-100 border-l-4 border-amber-500 rounded font-semibold text-gray-800 hidden"></div>
-      <ol id="hintsList" class="list-decimal pl-5 space-y-2 text-sm text-gray-800"></ol>
+<!-- Bloc pour afficher l'indice actuel plus en avant -->
+<div id="currentHint" class="mb-4 p-3 bg-yellow-100 border-l-4 border-amber-500 rounded font-semibold text-gray-800 hidden"></div>
+
+<ol id="hintsList" class="list-decimal pl-5 space-y-2 text-sm text-gray-800"></ol>
+
 
       <!-- Modal Nami -->
       <div id="namiModal" class="fixed inset-0 bg-black bg-opacity-40 hidden items-center justify-center">
@@ -78,10 +89,18 @@
           <img src="One piece/nami.jpeg" alt="Nami" class="w-20 h-20 object-cover rounded-full flex-shrink-0" />
           <div id="namiMessage" class="mt-2 font-semibold text-sm text-gray-800"></div>
           <div class="ml-auto mt-4 flex gap-2">
-            <button id="namiCloseBtn" class="px-4 py-2 rounded bg-lime-500">Ok</button>
-            <button id="namiRefuseBtn" class="px-4 py-2 rounded bg-red-500 text-white">Je suis un rat</button>
-          </div>
+  <button id="namiCloseBtn" class="px-4 py-2 rounded bg-lime-500">Ok</button>
+  <button id="namiRefuseBtn" class="px-4 py-2 rounded bg-red-500 text-white">Je suis un rat</button>
+</div>
+
         </div>
+      </div>
+
+      <ol id="hintsList" class="list-decimal pl-5 space-y-2 text-sm text-gray-800"></ol>
+
+      <div class="mt-6">
+        <h3 class="text-lg font-semibold">Scans & résultats</h3>
+        <div id="scanOutput" class="mt-2 p-3 bg-white rounded-md border h-32 overflow-auto"></div>
       </div>
 
       <div class="mt-6 text-center">
@@ -95,11 +114,13 @@
     </div>
 
     <footer class="col-span-12 text-center mt-4 text-xs text-gray-700">
-      Test en local : place le dossier <code>One piece/</code> à côté du fichier HTML, et ouvre <code>escape-onepiece.html</code> dans ton navigateur.
+      Test en local : place le dossier <code>One piece/</code> à côté du fichier HTML, et ouvre <code>escape-onepiece.html</code> dans ton navigateur. 
+      Pour la caméra, sert le site en HTTPS ou sur localhost.
     </footer>
   </div>
 
-  <!-- MODALS FINISH / END -->
+  <!-- MODALS -->
+  <!-- Modal Terminer -->
   <div id="finishModal" class="fixed inset-0 bg-black bg-opacity-40 hidden items-center justify-center">
     <div class="parchment p-6 w-11/12 max-w-xl">
       <h3 class="text-2xl title-font mb-4">Avez-vous vraiment terminé ?</h3>
@@ -114,6 +135,7 @@
     </div>
   </div>
 
+  <!-- Modal Moussaillon final -->
   <div id="endModal" class="fixed inset-0 bg-black bg-opacity-40 hidden items-center justify-center">
     <div class="parchment p-6 w-11/12 max-w-xl">
       <h3 class="text-2xl title-font mb-4">Alors Moussaillon, tu as trouvé le One Piece ?</h3>
@@ -132,18 +154,19 @@
   const MAX_HINTS = 5;
   const HINT_PENALTY = 300; 
   const TOTAL_TIME = 3600;
+
   let timer = TOTAL_TIME;
   let timerInterval = null;
   let started = false;
   let hintsUsed = 0;
+ const hintsStore = [
+  "Indice étape 1 : Pff, pourquoi faut-il toujours partager les trésors avec la famille… — Nami",
+  "Indice étape 2 : C’est étrange… des lignes se dessinent sur le papier, mais aucun hiéroglyphe visible — Robin",
+  "Indice étape 3 : Arrr… j'ai jamais aimé le vin… — Brawk !",
+  "Indice étape 4 : Avec mon sens de l'orientation je suis obligée de suivre l'ordre donné — Zoro",
+  "Indice étape 5 : Hiiiii vite ! Usopp a le mal des transports, allons vite chercher des soins en ville — Chopper"
+];
 
-  const hintsStore = [
-    "Indice étape 1 : Pff, pourquoi faut-il toujours partager les trésors avec la famille… — Nami",
-    "Indice étape 2 : C’est étrange… des lignes se dessinent sur le papier, mais aucun hiéroglyphe visible — Robin",
-    "Indice étape 3 : Arrr… j'ai jamais aimé le vin… — Brawk !",
-    "Indice étape 4 : Avec mon sens de l'orientation je suis obligée de suivre l'ordre donné — Zoro",
-    "Indice étape 5 : Hiiiii vite ! Usopp a le mal des transports, allons vite chercher des soins en ville — Chopper"
-  ];
 
   const timerDisplay = document.getElementById('timerDisplay');
   const startBtn = document.getElementById('startBtn');
@@ -151,6 +174,10 @@
   const hintBtn = document.getElementById('hintBtn');
   const hintSteps = document.getElementById('hintSteps');
   const hintsList = document.getElementById('hintsList');
+  const scanOutput = document.getElementById('scanOutput');
+  const qrBtn = document.getElementById('qrBtn');
+  const qrSection = document.getElementById('qrSection');
+  const qrResult = document.getElementById('qr-result');
   const finishBtn = document.getElementById('finishBtn');
 
   const finishModal = document.getElementById('finishModal');
@@ -191,7 +218,7 @@
   function resetGame(){
     clearInterval(timerInterval);
     timer = TOTAL_TIME; started = false; hintsUsed = 0;
-    hintsList.innerHTML=''; document.getElementById('currentHint').classList.add('hidden'); updateTimerDisplay();
+    hintsList.innerHTML=''; scanOutput.innerHTML=''; qrResult.innerHTML=''; updateTimerDisplay();
   }
 
   startBtn.addEventListener('click', ()=>{ startTimer(); });
@@ -214,7 +241,7 @@
 
       const namiModal = document.getElementById('namiModal');
       const namiMessage = document.getElementById('namiMessage');
-      namiMessage.textContent = "Ohohoh ! Un indice te coûtera 5 minutes — Nami";
+      namiMessage.textContent = "Ohohoh ! Un indice te coûtera 5 Berry... euh, 5 minutes je voulais dire. — Nami";
       namiModal.classList.remove('hidden');
       namiModal.style.display = 'flex';
 
@@ -246,14 +273,34 @@
   });
 
   document.getElementById('namiCloseBtn').addEventListener('click', ()=>{
-    document.getElementById('namiModal').classList.add('hidden');
-    document.getElementById('namiModal').style.display='none';
+    const namiModal = document.getElementById('namiModal');
+    namiModal.classList.add('hidden');
+    namiModal.style.display='none';
   });
   document.getElementById('namiRefuseBtn').addEventListener('click', ()=>{
-    document.getElementById('namiModal').classList.add('hidden');
-    document.getElementById('namiModal').style.display='none';
+    const namiModal = document.getElementById('namiModal');
+    namiModal.classList.add('hidden');
+    namiModal.style.display = 'none';
   });
 
+// --- QR Code (ouvre la caméra native) ---
+const cameraInput = document.getElementById('cameraInput');
+
+qrBtn.addEventListener('click', ()=>{
+  // Simule un clic sur l'input caché
+  cameraInput.click();
+});
+
+// Quand une photo est prise / choisie
+cameraInput.addEventListener('change', (event)=>{
+  if(event.target.files.length > 0){
+    const file = event.target.files[0];
+    scanOutput.innerHTML += `<div>📷 Photo sélectionnée : ${file.name}</div>`;
+  }
+});
+
+
+  // --- End Game Moussaillon ---
   function endGame(){ endModal.classList.remove('hidden'); endModal.style.display='flex'; }
 
   btnYes.addEventListener('click', ()=>{
@@ -268,6 +315,7 @@
     closeBtnContainer.classList.remove('hidden');
   });
 
+  // --- Terminer Modal ---
   finishBtn.addEventListener('click', ()=>{
     clearInterval(timerInterval); 
     timer = 0; 
@@ -304,5 +352,7 @@
 
   updateTimerDisplay();
 </script>
+
+
 </body>
 </html>
