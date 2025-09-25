@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Indice One Piece</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pirata+One&family=Nunito:wght@300;600;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Nunito', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; }
+    .title-font { font-family: 'Pirata One', cursive; }
+    .onepiece-bg { background: radial-gradient(circle at 10% 10%, #fef3c7, transparent 15%), linear-gradient(180deg,#0ea5a4 0%, #38bdf8 100%); min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 2rem; }
+    .parchment { background: linear-gradient(180deg,#fff7e6,#fff1d6); box-shadow: 0 8px 30px rgba(0,0,0,0.25); border: 6px solid #6b3f1e; border-radius: 16px; padding: 2rem; max-width: 500px; width: 100%; text-align: center; }
+    .btn { padding: 0.5rem 1rem; border-radius: 0.5rem; font-weight: 600; margin: 0.5rem; cursor: pointer; }
+    .btn-amber { background-color: #f59e0b; color: white; }
+    .btn-lime { background-color: #84cc16; color: white; }
+    .btn-gray { background-color: #d1d5db; color: black; }
+    #indiceBox { display: none; margin-top: 1rem; padding: 1rem; border-left: 4px solid #f59e0b; background: #fff7c2; font-weight: 600; border-radius: 8px; }
+  </style>
+</head>
+<body class="onepiece-bg">
+  <div class="parchment">
+    <h1 class="title-font text-2xl mb-4">Ohé Moussaillon !</h1>
+    <p class="mb-4">Tu as trouvé un indice ! Mais avant de le voir, choisis ta réponse :</p>
+    <div>
+      <button id="btnOui" class="btn btn-amber">OUI OUI OUI</button>
+      <button id="btnEvidemment" class="btn btn-lime">ÉVIDEMMENT</button>
+    </div>
+
+    <div id="indiceBox">Voila l’indice !</div>
+
+    <button id="saveBtn" class="btn btn-gray mt-4" style="display:none;">Sauvegarder l’indice</button>
+  </div>
+
+<script>
+  const btnOui = document.getElementById('btnOui');
+  const btnEvidemment = document.getElementById('btnEvidemment');
+  const indiceBox = document.getElementById('indiceBox');
+  const saveBtn = document.getElementById('saveBtn');
+
+  function showIndice(){
+    indiceBox.style.display = 'block';
+    saveBtn.style.display = 'inline-block';
+  }
+
+  btnOui.addEventListener('click', showIndice);
+  btnEvidemment.addEventListener('click', showIndice);
+
+  saveBtn.addEventListener('click', ()=>{
+    // Ici on pourrait ajouter une logique de communication avec le jeu principal si besoin
+    alert("Indice sauvegardé !");
+    window.close(); // ferme cette page
+  });
+</script>
+</body>
+</html>
