@@ -73,7 +73,9 @@
       <h3 class="text-lg font-semibold mb-3">Indices (coût : 5min)</h3>
 
 <!-- Bloc pour afficher l'indice actuel plus en avant -->
-<div id="currentHint" class="mb-4 p-3 bg-yellow-100 border-l-4 border-amber-500 rounded font-semibold text-gray-800 hidden"></div>
+<div id="currentHint" 
+     class="mb-4 p-3 bg-yellow-100 border-l-4 border-amber-500 rounded font-semibold text-gray-800 min-h-[3rem] flex items-center">
+</div>
 
 <ol id="hintsList" class="list-decimal pl-5 space-y-2 text-sm text-gray-800"></ol>
 
@@ -216,7 +218,6 @@
   // Réinitialiser l’affichage de l’indice courant
   const currentHint = document.getElementById('currentHint');
   currentHint.textContent = "";
-  currentHint.classList.add('hidden');
 }
 
 
@@ -257,7 +258,6 @@
 
         const currentHint = document.getElementById('currentHint');
         currentHint.textContent = hintsStore[step];
-        currentHint.classList.remove('hidden');
 
         btn.disabled = true;
         btn.classList.add('bg-gray-400', 'cursor-not-allowed');
@@ -342,4 +342,5 @@ finishYes.addEventListener('click', ()=>{
 
 </body>
 </html>
+
 
