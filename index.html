@@ -341,13 +341,17 @@ finishYes.addEventListener('click', ()=>{
   clearInterval(timerInterval);
   timer = 0;
   updateTimerDisplay();
+  main.style.display = 'none';
+  aside.style.display = 'none';
 
   finishChoices.style.display = 'none';
   finishPhrase.textContent = '';
+  
+  finishModal.classList.add('hidden');
   endModal.classList.remove('hidden');
   endModal.style.display='flex';
-  finishModal.classList.add('hidden');
 });
+
 
 
   finishNo.addEventListener('click', ()=>{
@@ -377,6 +381,7 @@ updateTimerDisplay();
 
 </body>
 </html>
+
 
 
 
