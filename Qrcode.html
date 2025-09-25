@@ -9,12 +9,14 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Pirata+One&family=Nunito:wght@300;600;800&display=swap" rel="stylesheet">
 <style>
-  body { font-family: 'Nunito', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; background: radial-gradient(circle at 10% 10%, #fef3c7, transparent 15%), linear-gradient(180deg,#0ea5a4 0%, #38bdf8 100%); min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 1rem;}
+  body { font-family: 'Nunito', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; 
+         background: radial-gradient(circle at 10% 10%, #fef3c7, transparent 15%), linear-gradient(180deg,#0ea5a4 0%, #38bdf8 100%); 
+         min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 1rem;}
   .parchment { background: linear-gradient(180deg,#fff7e6,#fff1d6); box-shadow: 0 8px 30px rgba(0,0,0,0.25); border: 6px solid #6b3f1e; border-radius: 16px; padding: 2rem; max-width: 400px; text-align: center;}
   .title-font { font-family: 'Pirata One', cursive; font-size: 2rem; }
   .sub-title { font-family: 'Pirata One', cursive; font-size: 2.5rem; margin-bottom: 1rem; }
   .chopper { width: 100px; height: 100px; margin: 1rem auto; border-radius: 50%; object-fit: cover; }
-  button { margin-top: 1rem; padding: 0.5rem 1rem; border-radius: 8px; font-weight: 600; }
+  button { margin-top: 1rem; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 600; }
 </style>
 </head>
 <body>
@@ -29,7 +31,7 @@
   </div>
   <div id="indiceContainer" class="hidden">
     <img src="One piece/Chopper.png" alt="Chopper" class="chopper">
-    <div id="indiceText" class="mb-4 font-semibold">Voici l'indice</div>
+    <div id="indiceText" class="mb-4 font-semibold">"Le banquet commence toujours autour du feu, et c’est souvent là que se révèle les secrets..."</div>
     <button id="saveBtn" class="bg-rose-500 text-white">Sauvegarder l'indice</button>
   </div>
 </div>
@@ -54,7 +56,6 @@ btnEvidemment.addEventListener('click', showIndice);
 
 // Sauvegarder l'indice et fermer la page (on pourra remplacer par redirection après)
 saveBtn.addEventListener('click', () => {
-  // Ici on peut faire un fetch ou redirection vers le site principal
   alert("Indice sauvegardé ! Tu peux le retrouver sur le guide principal.  Tourne la page et retourne-y marin d'eau douce");
   window.close(); // ferme ce site
 });
