@@ -57,7 +57,10 @@
               <button class="step-btn px-3 py-2 rounded bg-amber-400 text-white font-semibold" data-step="4">Step 5</button>
             </div>
           </div>
+          
         </div>
+
+
 
         <section class="flex items-center justify-center">
           <img src="One piece/flag.jpeg" alt="Drapeau Luffy" class="w-40" />
@@ -69,10 +72,11 @@
     <aside class="col-span-4 scroll">
       <h3 class="text-lg font-semibold mb-3">Indices (coût : 5min)</h3>
 
-      <!-- Bloc pour afficher l'indice actuel plus en avant -->
-      <div id="currentHint" class="mb-4 p-3 bg-yellow-100 border-l-4 border-amber-500 rounded font-semibold text-gray-800 hidden"></div>
+<!-- Bloc pour afficher l'indice actuel plus en avant -->
+<div id="currentHint" class="mb-4 p-3 bg-yellow-100 border-l-4 border-amber-500 rounded font-semibold text-gray-800 hidden"></div>
 
-      <ol id="hintsList" class="list-decimal pl-5 space-y-2 text-sm text-gray-800"></ol>
+<ol id="hintsList" class="list-decimal pl-5 space-y-2 text-sm text-gray-800"></ol>
+
 
       <!-- Modal Nami -->
       <div id="namiModal" class="fixed inset-0 bg-black bg-opacity-40 hidden items-center justify-center">
@@ -80,9 +84,10 @@
           <img src="One piece/nami.jpeg" alt="Nami" class="w-20 h-20 object-cover rounded-full flex-shrink-0" />
           <div id="namiMessage" class="mt-2 font-semibold text-sm text-gray-800"></div>
           <div class="ml-auto mt-4 flex gap-2">
-            <button id="namiCloseBtn" class="px-4 py-2 rounded bg-lime-500">Ok</button>
-            <button id="namiRefuseBtn" class="px-4 py-2 rounded bg-red-500 text-white">Je suis un rat</button>
-          </div>
+  <button id="namiCloseBtn" class="px-4 py-2 rounded bg-lime-500">Ok</button>
+  <button id="namiRefuseBtn" class="px-4 py-2 rounded bg-red-500 text-white">Je suis un rat</button>
+</div>
+
         </div>
       </div>
 
@@ -101,6 +106,9 @@
     <!-- Écran final Equipage -->
     <div id="crewScreen" class="hidden col-span-12 w-full flex justify-center items-center mt-6">
       <img src="One piece/Equipage.jpeg" alt="Equipage" class="max-w-full h-auto rounded-lg shadow-lg" />
+    </div>
+
+  </div>
 
   <!-- MODALS -->
   <!-- Modal Terminer -->
@@ -142,13 +150,14 @@
   let timerInterval = null;
   let started = false;
   let hintsUsed = 0;
-  const hintsStore = [
-    "Indice étape 1 : Pff, pourquoi faut-il toujours partager les trésors avec la famille… — Nami",
-    "Indice étape 2 : C’est étrange… des lignes se dessinent sur le papier, mais aucun hiéroglyphe visible — Robin",
-    "Indice étape 3 : Arrr… j'ai jamais aimé le vin… — Brawk !",
-    "Indice étape 4 : Avec mon sens de l'orientation je suis obligée de suivre l'ordre donné — Zoro",
-    "Indice étape 5 : Hiiiii vite ! Usopp a le mal des transports, allons vite chercher des soins en ville — Chopper"
-  ];
+ const hintsStore = [
+  "Indice étape 1 : Pff, pourquoi faut-il toujours partager les trésors avec la famille… — Nami",
+  "Indice étape 2 : C’est étrange… des lignes se dessinent sur le papier, mais aucun hiéroglyphe visible — Robin",
+  "Indice étape 3 : Arrr… j'ai jamais aimé le vin… — Brawk !",
+  "Indice étape 4 : Avec mon sens de l'orientation je suis obligée de suivre l'ordre donné — Zoro",
+  "Indice étape 5 : Hiiiii vite ! Usopp a le mal des transports, allons vite chercher des soins en ville — Chopper"
+];
+
 
   const timerDisplay = document.getElementById('timerDisplay');
   const startBtn = document.getElementById('startBtn');
@@ -197,7 +206,7 @@
   function resetGame(){
     clearInterval(timerInterval);
     timer = TOTAL_TIME; started = false; hintsUsed = 0;
-    hintsList.innerHTML=''; scanOutput.innerHTML=''; updateTimerDisplay();
+    hintsList.innerHTML=''; scanOutput.innerHTML=''; qrResult.innerHTML=''; updateTimerDisplay();
   }
 
   startBtn.addEventListener('click', ()=>{ startTimer(); });
@@ -262,6 +271,7 @@
     namiModal.style.display = 'none';
   });
 
+
   // --- End Game Moussaillon ---
   function endGame(){ endModal.classList.remove('hidden'); endModal.style.display='flex'; }
 
@@ -314,5 +324,7 @@
 
   updateTimerDisplay();
 </script>
+
+
 </body>
 </html>
