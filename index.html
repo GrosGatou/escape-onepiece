@@ -93,6 +93,7 @@
     <div id="crewScreen" class="hidden col-span-12 w-full flex justify-center items-center mt-6">
       <img src="One piece/Equipage.jpeg" alt="Equipage" class="max-w-full h-auto rounded-lg shadow-lg" />
 
+
   <!-- MODALS FINISH / END -->
   <div id="finishModal" class="fixed inset-0 bg-black bg-opacity-40 hidden items-center justify-center">
     <div class="parchment p-6 w-11/12 max-w-xl">
@@ -123,271 +124,180 @@
   </div>
 
 <script>
-const MAX_HINTS = 5;
-const HINT_PENALTY = 300;
-const TOTAL_TIME = 3600;
+  const MAX_HINTS = 5;
+  const HINT_PENALTY = 300; 
+  const TOTAL_TIME = 3600;
+  let timer = TOTAL_TIME;
+  let timerInterval = null;
+  let started = false;
+  let hintsUsed = 0;
 
-let timer = TOTAL_TIME;
-let timerInterval = null;
-let started = false;
-let hintsUsed = 0;
+  const hintsStore = [
+    "Indice étape 1 : Pff, pourquoi faut-il toujours partager les trésors avec la famille… — Nami",
+    "Indice étape 2 : C’est étrange… des lignes se dessinent sur le papier, mais aucun hiéroglyphe visible — Robin",
+    "Indice étape 3 : Arrr… j'ai jamais aimé le vin… — Brawk !",
+    "Indice étape 4 : Avec mon sens de l'orientation je suis obligée de suivre l'ordre donné — Zoro",
+    "Indice étape 5 : Hiiiii vite ! Usopp a le mal des transports, allons vite chercher des soins en ville — Chopper"
+  ];
 
-const hintsStore = [
-  "Indice étape 1 : Pff, pourquoi faut-il toujours partager les trésors avec la famille… — Nami",
-  "Indice étape 2 : C’est étrange… des lignes se dessinent sur le papier, mais aucun hiéroglyphe visible — Robin",
-  "Indice étape 3 : Arrr… j'ai jamais aimé le vin… — Brawk !",
-  "Indice étape 4 : Avec mon sens de l'orientation je suis obligée de suivre l'ordre donné — Zoro",
-  "Indice étape 5 : Hiiiii vite ! Usopp a le mal des transports, allons vite chercher des soins en ville — Chopper"
-];
+  const timerDisplay = document.getElementById('timerDisplay');
+  const startBtn = document.getElementById('startBtn');
+  const resetBtn = document.getElementById('resetBtn');
+  const hintBtn = document.getElementById('hintBtn');
+  const hintSteps = document.getElementById('hintSteps');
+  const hintsList = document.getElementById('hintsList');
+  const finishBtn = document.getElementById('finishBtn');
 
-const timerDisplay = document.getElementById('timerDisplay');
-const startBtn = document.getElementById('startBtn');
-const resetBtn = document.getElementById('resetBtn');
-const hintBtn = document.getElementById('hintBtn');
-const hintSteps = document.getElementById('hintSteps');
-const hintsList = document.getElementById('hintsList');
-const finishBtn = document.getElementById('finishBtn');
+  const finishModal = document.getElementById('finishModal');
+  const finishYes = document.getElementById('finishYes');
+  const finishNo = document.getElementById('finishNo');
+  const finishChoices = document.getElementById('finishChoices');
+  const finishPhrase = document.getElementById('finishPhrase');
+  const finishCloseContainer = document.getElementById('finishCloseContainer');
 
-const finishModal = document.getElementById('finishModal');
-const finishYes = document.getElementById('finishYes');
-const finishNo = document.getElementById('finishNo');
-const finishChoices = document.getElementById('finishChoices');
-const finishPhrase = document.getElementById('finishPhrase');
-const finishCloseContainer = document.getElementById('finishCloseContainer');
+  const endModal = document.getElementById('endModal');
+  const btnYes = document.getElementById('btnYes');
+  const btnNo = document.getElementById('btnNo');
+  const endPhrase = document.getElementById('endPhrase');
+  const closeBtnContainer = document.getElementById('closeBtnContainer');
+  const closeBtn = document.getElementById('closeBtn');
 
-const endModal = document.getElementById('endModal');
-const btnYes = document.getElementById('btnYes');
-const btnNo = document.getElementById('btnNo');
-const endPhrase = document.getElementById('endPhrase');
-const closeBtnContainer = document.getElementById('closeBtnContainer');
-const closeBtn = document.getElementById('closeBtn');
+  const crewScreen = document.getElementById('crewScreen');
+  const main = document.querySelector('main');
+  const aside = document.querySelector('aside');
 
-const crewScreen = document.getElementById('crewScreen');
-const main = document.querySelector('main');
-const aside = document.querySelector('aside');
-
-// --- Fonctions timer ---
-function formatTime(s){
-  const mm = Math.floor(s/60).toString().padStart(2,'0');
-  const ss = (s%60).toString().padStart(2,'0');
-  return `${mm}:${ss}`;
-}
-
-function updateTimerDisplay(){ timerDisplay.textContent = formatTime(timer); }
-
-function startTimer(){
-  if(started) return;
-  started = true;
-  timerInterval = setInterval(()=>{
-    if(timer<=0){ clearInterval(timerInterval); timer=0; updateTimerDisplay(); endGame(); return; }
-    timer -= 1; updateTimerDisplay();
-    saveState();
-  },1000);
-}
-
-// --- Reset ---
-function resetGame(){
-  clearInterval(timerInterval);
-  timer = TOTAL_TIME; started = false; hintsUsed = 0;
-  hintsList.innerHTML='';
-  document.getElementById('currentHint').classList.add('hidden');
-  // Réactive tous les step boutons
-  document.querySelectorAll('.step-btn').forEach(btn=>{
-    btn.disabled = false;
-    btn.classList.remove('bg-gray-400','cursor-not-allowed');
-    btn.classList.add('bg-amber-400');
-  });
-  localStorage.removeItem('onepieceGame');
-  updateTimerDisplay();
-}
-
-startBtn.addEventListener('click', ()=>{ startTimer(); });
-resetBtn.addEventListener('click', ()=>{ if(confirm('Réinitialiser le jeu ?')) resetGame(); });
-
-// --- Step indices ---
-const stepBtns = document.querySelectorAll('.step-btn');
-hintBtn.addEventListener('click', ()=>{
-  if(!started){ alert('Démarre le timer, tricheur.'); return; }
-  hintSteps.classList.toggle('hidden');
-});
-
-stepBtns.forEach(btn => {
-  btn.addEventListener('click', () => {
-    const step = parseInt(btn.dataset.step);
-    if(hintsUsed >= MAX_HINTS){ alert("Plus d'indices disponibles."); return; }
-    if(btn.disabled) return;
-
-    hintSteps.classList.add('hidden');
-
-    const namiModal = document.getElementById('namiModal');
-    const namiMessage = document.getElementById('namiMessage');
-    namiMessage.textContent = "Ohohoh ! Un indice te coûtera 5 minutes — Nami";
-    namiModal.classList.remove('hidden');
-    namiModal.style.display = 'flex';
-
-    const okBtn = document.getElementById('namiCloseBtn');
-    okBtn.onclick = ()=>{
-      if(timer <= HINT_PENALTY){
-        if(!confirm("Prendre cet indice va terminer le temps restant — confirmer ?")) {
-          namiModal.classList.add('hidden');
-          return;
-        }
-      }
-      timer = Math.max(0, timer - HINT_PENALTY);
-      hintsUsed += 1;
-
-      const currentHint = document.getElementById('currentHint');
-      currentHint.textContent = hintsStore[step];
-      currentHint.classList.remove('hidden');
-
-      btn.disabled = true;
-      btn.classList.add('bg-gray-400', 'cursor-not-allowed');
-      btn.classList.remove('bg-amber-400');
-
-      namiModal.classList.add('hidden');
-      namiModal.style.display='none';
-      updateTimerDisplay();
-      saveState();
-      if(timer === 0) endGame();
-    };
-  });
-});
-
-document.getElementById('namiCloseBtn').addEventListener('click', ()=>{
-  document.getElementById('namiModal').classList.add('hidden');
-  document.getElementById('namiModal').style.display='none';
-});
-document.getElementById('namiRefuseBtn').addEventListener('click', ()=>{
-  document.getElementById('namiModal').classList.add('hidden');
-  document.getElementById('namiModal').style.display='none';
-});
-
-// --- End game / modals ---
-function endGame(){ 
-  endModal.classList.remove('hidden'); 
-  endModal.style.display='flex'; 
-  saveState();
-}
-
-btnYes.addEventListener('click', ()=>{
-  document.getElementById('endChoices').style.display = 'none';
-  endPhrase.textContent = "Tu fais maintenant partie de l'équipage du Chapeau de Paille — fête au banquet !";
-  closeBtnContainer.classList.remove('hidden');
-  saveState();
-});
-
-btnNo.addEventListener('click', ()=>{
-  document.getElementById('endChoices').style.display = 'none';
-  endPhrase.textContent = "Pas grave, moussaillon : la vraie aventure, c'est le voyage. Réessaie ou savoure un apéro !";
-  closeBtnContainer.classList.remove('hidden');
-  saveState();
-});
-
-finishBtn.addEventListener('click', ()=>{
-  clearInterval(timerInterval);
-  timer = 0;
-  updateTimerDisplay();
-  finishModal.classList.remove('hidden');
-  finishModal.style.display = 'flex';
-  finishChoices.style.display='flex';
-  finishPhrase.textContent='';
-  finishCloseContainer.classList.add('hidden');
-  saveState();
-});
-
-finishYes.addEventListener('click', ()=>{
-  finishChoices.style.display = 'none';
-  finishPhrase.textContent = '';
-  endModal.classList.remove('hidden');
-  endModal.style.display='flex';
-  finishModal.classList.add('hidden');
-  saveState();
-});
-
-finishNo.addEventListener('click', ()=>{
-  finishModal.classList.add('hidden');
-  finishModal.style.display = 'none';
-});
-
-closeBtn.addEventListener('click', ()=>{
-  main.style.display = 'none';
-  aside.style.display = 'none';
-  finishModal.style.display = 'none';
-  endModal.style.display = 'none';
-  crewScreen.classList.remove('hidden');
-  crewScreen.style.display = 'flex';
-  saveState();
-});
-
-// --- Texte supplémentaire selon URL ---
-function getUrlParameter(name) {
-  const params = new URLSearchParams(window.location.search);
-  return params.get(name);
-}
-
-const urlIndice = getUrlParameter('indice');
-if (urlIndice !== null) {
-  const mainSection = document.querySelector('main section');
-  const extraText = document.createElement('div');
-  extraText.textContent = `Texte spécial pour l'indice ${urlIndice} !`;
-  extraText.classList.add('mt-2', 'text-center', 'font-semibold', 'text-lg', 'text-rose-600');
-  mainSection.appendChild(extraText);
-}
-
-// --- LocalStorage pour sauvegarder / restaurer état ---
-function saveState(){
-  const state = {
-    timer,
-    hintsUsed,
-    started,
-    disabledSteps: Array.from(document.querySelectorAll('.step-btn')).map(btn => btn.disabled),
-    finishModalVisible: finishModal.style.display==='flex',
-    endModalVisible: endModal.style.display==='flex',
-    crewVisible: crewScreen.style.display==='flex'
-  };
-  localStorage.setItem('onepieceGame', JSON.stringify(state));
-}
-
-function loadState(){
-  const state = JSON.parse(localStorage.getItem('onepieceGame'));
-  if(state){
-    timer = state.timer;
-    hintsUsed = state.hintsUsed;
-    started = state.started;
-
-    const stepBtns = document.querySelectorAll('.step-btn');
-    stepBtns.forEach((btn,i)=>{
-      btn.disabled = state.disabledSteps[i];
-      if(btn.disabled){
-        btn.classList.add('bg-gray-400','cursor-not-allowed');
-        btn.classList.remove('bg-amber-400');
-      }
-    });
-
-    if(state.finishModalVisible) {
-      finishModal.classList.remove('hidden'); finishModal.style.display='flex';
-    }
-    if(state.endModalVisible){
-      endModal.classList.remove('hidden'); endModal.style.display='flex';
-    }
-    if(state.crewVisible){
-      main.style.display='none'; aside.style.display='none';
-      crewScreen.classList.remove('hidden'); crewScreen.style.display='flex';
-    }
-
-    updateTimerDisplay();
-    if(started) startTimer();
+  function formatTime(s){
+    const mm = Math.floor(s/60).toString().padStart(2,'0');
+    const ss = (s%60).toString().padStart(2,'0');
+    return `${mm}:${ss}`;
   }
-}
 
-// --- Initialisation ---
-loadState();
-updateTimerDisplay();
+  function updateTimerDisplay(){ timerDisplay.textContent = formatTime(timer); }
+
+  function startTimer(){
+    if(started) return;
+    started = true;
+    timerInterval = setInterval(()=>{
+      if(timer<=0){ clearInterval(timerInterval); timer=0; updateTimerDisplay(); endGame(); return; }
+      timer -= 1; updateTimerDisplay();
+    },1000);
+  }
+
+  function resetGame(){
+    clearInterval(timerInterval);
+    timer = TOTAL_TIME; started = false; hintsUsed = 0;
+    hintsList.innerHTML=''; document.getElementById('currentHint').classList.add('hidden'); updateTimerDisplay();
+  }
+
+  startBtn.addEventListener('click', ()=>{ startTimer(); });
+  resetBtn.addEventListener('click', ()=>{ if(confirm('Réinitialiser le jeu ?')) resetGame(); });
+
+  // --- Step indices ---
+  const stepBtns = document.querySelectorAll('.step-btn');
+  hintBtn.addEventListener('click', ()=>{
+    if(!started){ alert('Démarre le timer, tricheur.'); return; }
+    hintSteps.classList.toggle('hidden');
+  });
+
+  stepBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const step = parseInt(btn.dataset.step);
+      if(hintsUsed >= MAX_HINTS){ alert("Plus d'indices disponibles."); return; }
+      if(btn.disabled) return;
+
+      hintSteps.classList.add('hidden'); 
+
+      const namiModal = document.getElementById('namiModal');
+      const namiMessage = document.getElementById('namiMessage');
+      namiMessage.textContent = "Ohohoh ! Un indice te coûtera 5 minutes — Nami";
+      namiModal.classList.remove('hidden');
+      namiModal.style.display = 'flex';
+
+      const okBtn = document.getElementById('namiCloseBtn');
+      okBtn.onclick = ()=>{
+        if(timer <= HINT_PENALTY){
+          if(!confirm("Prendre cet indice va terminer le temps restant — confirmer ?")) {
+            namiModal.classList.add('hidden');
+            return;
+          }
+        }
+        timer = Math.max(0, timer - HINT_PENALTY);
+        hintsUsed += 1;
+
+        const currentHint = document.getElementById('currentHint');
+        currentHint.textContent = hintsStore[step];
+        currentHint.classList.remove('hidden');
+
+        btn.disabled = true;
+        btn.classList.add('bg-gray-400', 'cursor-not-allowed');
+        btn.classList.remove('bg-amber-400');
+
+        namiModal.classList.add('hidden');
+        namiModal.style.display='none';
+        updateTimerDisplay();
+        if(timer === 0) endGame();
+      };
+    });
+  });
+
+  document.getElementById('namiCloseBtn').addEventListener('click', ()=>{
+    document.getElementById('namiModal').classList.add('hidden');
+    document.getElementById('namiModal').style.display='none';
+  });
+  document.getElementById('namiRefuseBtn').addEventListener('click', ()=>{
+    document.getElementById('namiModal').classList.add('hidden');
+    document.getElementById('namiModal').style.display='none';
+  });
+
+  function endGame(){ endModal.classList.remove('hidden'); endModal.style.display='flex'; }
+
+  btnYes.addEventListener('click', ()=>{
+    document.getElementById('endChoices').style.display = 'none';
+    endPhrase.textContent = "Tu fais maintenant partie de l'équipage du Chapeau de Paille — fête au banquet !";
+    closeBtnContainer.classList.remove('hidden');
+  });
+
+  btnNo.addEventListener('click', ()=>{
+    document.getElementById('endChoices').style.display = 'none';
+    endPhrase.textContent = "Pas grave, moussaillon : la vraie aventure, c'est le voyage. Réessaie ou savoure un apéro !";
+    closeBtnContainer.classList.remove('hidden');
+  });
+
+  finishBtn.addEventListener('click', ()=>{
+    clearInterval(timerInterval); 
+    timer = 0; 
+    updateTimerDisplay();
+    finishModal.classList.remove('hidden');
+    finishModal.style.display = 'flex';
+    finishChoices.style.display='flex';
+    finishPhrase.textContent='';
+    finishCloseContainer.classList.add('hidden');
+  });
+
+  finishYes.addEventListener('click', ()=>{
+    finishChoices.style.display = 'none';
+    finishPhrase.textContent = '';
+    endModal.classList.remove('hidden');
+    endModal.style.display='flex';
+    finishModal.classList.add('hidden');
+  });
+
+  finishNo.addEventListener('click', ()=>{
+    finishModal.classList.add('hidden');    
+    finishModal.style.display = 'none';    
+  });
+
+  closeBtn.addEventListener('click', ()=>{
+    main.style.display = 'none';
+    aside.style.display = 'none';
+    finishModal.style.display = 'none';
+    endModal.style.display = 'none';
+
+    crewScreen.classList.remove('hidden');
+    crewScreen.style.display = 'flex';
+  });
+
+  updateTimerDisplay();
 </script>
-
-
 </body>
 </html>
-
-
-
