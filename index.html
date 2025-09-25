@@ -373,7 +373,17 @@ pauseBtn.addEventListener('click', ()=>{
   paused = !paused; // on inverse l’état
   pauseBtn.textContent = paused ? "Reprendre" : "Pause"; // on change le texte du bouton
 });
-
+// Écoute les modifications sur le localStorage
+window.addEventListener('storage', (event) => {
+  if (event.key === 'sharedIndice' && event.newValue) {
+    // Ajouter l'indice dans la case blanche "Scans & résultats"
+    scanOutput.innerHTML += `<p>${event.newValue}</p>`;
+    
+    // Facultatif : effacer la clé pour éviter doublons
+    localStorage.removeItem('sharedIndice');
+  }
+});
+  
 updateTimerDisplay();
 
 </script>
@@ -381,6 +391,7 @@ updateTimerDisplay();
 
 </body>
 </html>
+
 
 
 
